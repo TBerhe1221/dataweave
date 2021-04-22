@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="input" format="json">
+      <types:shape format="weave" example="examples/Map Operator Input.json"><![CDATA[%dw 2.0
+
+type input = {|
+  employee: Array<{|    FirstName: String,     LastName: String,     Email: String  |}>, 
+  Company: {| name: String |}
+|} {"example": "{\\\"employee\\\":[{\\\"FirstName\\\":\\\"John\\\",\\\"LastName\\\":\\\"Smith\\\",\\\"Email\\\":\\\"john@gmail.com\\\"},{\\\"FirstName\\\":\\\"Bob\\\",\\\"LastName\\\":\\\"Stryf\\\",\\\"Email\\\":\\\"bob@gmail.com\\\"}],\\\"Company\\\":{\\\"name\\\":\\\"IBM\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="Filter-Input" format="json">
+      <types:shape format="weave" example="examples/filter-input dw.json"><![CDATA[%dw 2.0
+
+type Filter_Input = {|
+  status: String, 
+  data: Array<{|    id: String,     employee_name: String,     employee_salary: Number {"typeId": "int"},     employee_age: Number {"typeId": "int"},     profile_image: String  |}>
+|} {"example": "{\\\"status\\\":\\\"success\\\",\\\"data\\\":[{\\\"id\\\":\\\"1\\\",\\\"employee_name\\\":\\\"Tiger Nixon\\\",\\\"employee_salary\\\":320800,\\\"employee_age\\\":61,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"2\\\",\\\"employee_name\\\":\\\"Garrett Winters\\\",\\\"employee_salary\\\":170750,\\\"employee_age\\\":63,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"3\\\",\\\"employee_name\\\":\\\"Ashton Cox\\\",\\\"employee_salary\\\":86000,\\\"employee_age\\\":66,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"4\\\",\\\"employee_name\\\":\\\"Cedric Kelly\\\",\\\"employee_salary\\\":433060,\\\"employee_age\\\":22,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"5\\\",\\\"employee_name\\\":\\\"Airi Satou\\\",\\\"employee_salary\\\":162700,\\\"employee_age\\\":33,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"6\\\",\\\"employee_name\\\":\\\"Brielle Williamson\\\",\\\"employee_salary\\\":372000,\\\"employee_age\\\":61,\\\"profile_image\\\":\\\"\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="Input1" format="json">
+      <types:shape format="weave" example="examples/Input json1.json"><![CDATA[%dw 2.0
+
+type Input1 = Array<{|  firstName: String,   lastName: String,   age: Number {"typeId": "int"}|}> {"example": "[{\\\"firstName\\\":\\\"John\\\",\\\"lastName\\\":\\\"Smith\\\",\\\"age\\\":45},{\\\"firstName\\\":\\\"Jane\\\",\\\"lastName\\\":\\\"Doe\\\",\\\"age\\\":34}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="mapinput" format="json">
+      <types:shape format="weave" example="examples/filter-input dw-1.json"><![CDATA[%dw 2.0
+
+type mapinput = {|
+  data: Array<{|    id: String,     employee_name: String,     employee_salary: Number {"typeId": "int"},     employee_age: Number {"typeId": "int"},     profile_image: String  |}>
+|} {"example": "{\\\"data\\\":[{\\\"id\\\":\\\"1\\\",\\\"employee_name\\\":\\\"Tiger Nixon\\\",\\\"employee_salary\\\":320800,\\\"employee_age\\\":61,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"2\\\",\\\"employee_name\\\":\\\"Garrett Winters\\\",\\\"employee_salary\\\":170750,\\\"employee_age\\\":63,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"3\\\",\\\"employee_name\\\":\\\"Ashton Cox\\\",\\\"employee_salary\\\":86000,\\\"employee_age\\\":66,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"4\\\",\\\"employee_name\\\":\\\"Cedric Kelly\\\",\\\"employee_salary\\\":433060,\\\"employee_age\\\":22,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"5\\\",\\\"employee_name\\\":\\\"Airi Satou\\\",\\\"employee_salary\\\":162700,\\\"employee_age\\\":33,\\\"profile_image\\\":\\\"\\\"},{\\\"id\\\":\\\"6\\\",\\\"employee_name\\\":\\\"Brielle Williamson\\\",\\\"employee_salary\\\":372000,\\\"employee_age\\\":61,\\\"profile_image\\\":\\\"\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="filter" format="json">
+      <types:shape format="weave" example="examples/input-input.json"><![CDATA[%dw 2.0
+
+type filter = {|
+  Id: String, 
+  marketCode: String, 
+  languageCode: String, 
+  profile: {|
+    base: {|
+      username: String, 
+      activeInd: String, 
+      phone: Array<{|        activeInd: String,         "type": String,         primaryInd: String,         number: String      |}>
+    |}
+  |}
+|} {"example": "{\\\"Id\\\":\\\"1184001100000000517\\\",\\\"marketCode\\\":\\\"US\\\",\\\"languageCode\\\":\\\"en-US\\\",\\\"profile\\\":{\\\"base\\\":{\\\"username\\\":\\\"TheMule\\\",\\\"activeInd\\\":\\\"R\\\",\\\"phone\\\":[{\\\"activeInd\\\":\\\"Y\\\",\\\"type\\\":\\\"mobile\\\",\\\"primaryInd\\\":\\\"Y\\\",\\\"number\\\":\\\"230678123\\\"},{\\\"activeInd\\\":\\\"N\\\",\\\"type\\\":\\\"mobile\\\",\\\"primaryInd\\\":\\\"N\\\",\\\"number\\\":\\\"\\\"},{\\\"activeInd\\\":\\\"Y\\\",\\\"type\\\":\\\"mobile\\\",\\\"primaryInd\\\":\\\"Y\\\",\\\"number\\\":\\\"154896523\\\"}]}}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="mar28" format="json">
+      <types:shape format="weave" example="examples/mar28.json"><![CDATA[%dw 2.0
+
+type mar28 = Array<{|  Id: String,   name: String|}> {"example": "[{\\\"Id\\\":\\\"12234\\\",\\\"name\\\":\\\"sdsvd\\\"},{\\\"Id\\\":\\\"\\\",\\\"name\\\":\\\"abcd\\\"},{\\\"Id\\\":\\\"54654656667\\\",\\\"name\\\":\\\"\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#956289fd-c4de-4db2-8fa2-1ef51c8071bb">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="input"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#26228fbd-f4b6-49a6-b0ef-fe28c4f17d57">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Filter-Input"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#0e92b642-2140-4b4e-b48e-bfc01087873b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="Input1"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2be59521-0589-455e-b6b1-b4847d84a152">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="mapinput"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#55d23f42-9abd-4693-9055-f60001ba1ae0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:attributes type="filter"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2a8c1ca8-ac4a-45be-89c5-455d78391b9e">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="mar28"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

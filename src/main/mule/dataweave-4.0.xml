@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f5070970-65fb-4ef5-94f2-ba8d64272076" >
+		<http:listener-connection host="0.0.0.0" port="8086" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="6f685257-8b74-4232-9b7d-55523865321e" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<flow name="dataweave-4.0Flow" doc:id="c819fe91-2e35-4fe2-9aac-0e5c699b7499" >
+		<http:listener doc:name="Listener" doc:id="81811465-549d-4eae-96cc-7f93701dc29d" config-ref="HTTP_Listener_config" path="dw"/>
+		<ee:transform doc:name="Map Function (Operator)" doc:id="956289fd-c4de-4db2-8fa2-1ef51c8071bb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"candidatesdatail": payload.employee map((item, index) ->{
+	"fname": item.FirstName ++ " " ++ item.LastName
+	}
+	)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dataweave-4.0Flow1" doc:id="ce76a191-7d25-4e7f-9e50-7c350e241f36" >
+		<http:listener doc:name="Listener" doc:id="a463dc45-5238-46b8-9f83-7c00db2fcfbd" config-ref="HTTP_Listener_config1" path="dw"/>
+		<ee:transform doc:name="distnictBy Iterates over an array and returns the unique elements in it" doc:id="27c38a02-2cc9-49ef-be3d-7dbaf438b590" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var record =  {
+  "title": "XQuery Kick Start",
+  "author": [
+    "James McGovern",
+    "Per Bothner",
+    "Kurt Cagle",
+    "James Linn",
+    "Kurt Cagle",
+    "Kurt Cagle",
+    "Kurt Cagle",
+    "Vaidyanathan Nagarajan"
+  ],
+  "year":"2000"
+}
+---
+{"Book" : {
+	"title": record.title,
+	"year": record.year,
+	"author": record.author distinctBy $
+	 
+}
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="filter Iterates over an array and applies an expression that returns matching values." doc:id="b5db005a-aa69-4aa4-b450-b5af1624b6f0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var users = [
+   {
+      "user": {
+         "name": "123",
+         "lastName": "Smith"
+      },
+      "error": "That name doesn't exists"
+   },
+   {
+      "user": {
+         "name": "John",
+         "lastName": "Johnson"
+      },
+      "error": null
+   }
+]
+---
+users filter ((item,index) -> item.error == null)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="filter example-2" doc:id="55d23f42-9abd-4693-9055-f60001ba1ae0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	id: payload.Id,
+	markCode: payload.marketCode,
+	languageCode: payload.languageCode,
+	username: payload.profile.base.username,
+	phoneNumber: (payload.profile.base.phone filter ($.activeInd == "Y" and $.primaryInd== "Y")).number default []
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dataweave-4.0Flow2" doc:id="9e00d848-59bf-43d1-889b-a55f8a09f8a4" >
+		<ee:transform doc:name="GroupBy Returns an object that groups items from an array based on specified criteria" doc:id="200c19c6-20ef-47b5-9e90-127d8f49510c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+var myArray = [
+   { "name": "Foo", "language": "Java" },
+   { "name": "Bar", "language": "Scala" },
+   { "name": "FooBar", "language": "Java" }
+]
+output application/json
+---
+myArray groupBy (item)-> item.language]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dataweave-4.0Flow4" doc:id="235df614-bcd4-4200-a2b8-648c39baa12f" >
+		<ee:transform doc:name="if/else expressions" doc:id="b7d71046-9de6-4efc-a590-6da9b4d067c9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var action = if (payload.Price < 100) "buy" else "hold"
+---
+{
+	price: payload.Price,
+	action: action
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="if/else expressions" doc:id="81d8fc2d-7f51-4b0d-8671-4e9dfbff8b0f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var action = if (payload.Price < 99) 
+"buy"
+else if (payload.Price > 101) 
+"sell"
+else 
+"hold"
+---
+{
+	Price: payload.Price,
+	action: action
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dataweave-4.0Flow3" doc:id="74dc1a34-8532-4153-b16c-f2537c92f80b" >
+		<ee:transform doc:name="map and filter the below payload" doc:id="2a8c1ca8-ac4a-45be-89c5-455d78391b9e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json  
+---
+ payload filter ($.Id != "" and $.name != "") map ((item, index) -> 
+    (item.Id): item.name
+  )]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="7d828988-2b07-43e0-98a6-6e577a30b76e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var payload = 
+  [
+    {
+      "sale_price": 78
+    },
+    {
+      "sale_price": 44
+    },
+    {
+      "sale_price": 56
+    }
+  ]
+  var count = 2
+---
+if(count ==0) []
+else if(count > sizeOf(payload))
+(payload[0 to -1])
+else payload[0 to (count -1)]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
